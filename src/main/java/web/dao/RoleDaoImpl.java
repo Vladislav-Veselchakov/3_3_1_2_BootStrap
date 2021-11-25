@@ -31,7 +31,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     @SuppressWarnings("Unchecked")
     public List<Role> getRoles() {
-        return entityManager.createQuery("SELECT r FROM Role r").getResultList();
+        return entityManager.createQuery("SELECT r FROM Role r ORDER BY r.id").getResultList();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package web.controllers;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import web.service.UserService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -28,7 +30,13 @@ public class AdminPageController {
     }
 
     @GetMapping("/admin")
-    public String AdminPage(Model model) {
+    public String AdminPage(Authentication auth, Model model) {
+        User user = (User)auth.getPrincipal();
+        String headEmail = user.getEmail();
+        model.addAttribute("headEmail", headEmail);
+        String headRoles = Arrays.toString(user.getRoles().toArray());
+        model.addAttribute("headRoles", headRoles);
+
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
         List<Role> roles = roleService.getRoles();

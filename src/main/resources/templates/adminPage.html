@@ -11,10 +11,11 @@
 </head>
 <body>
 
+<!-- //////////////////////////////Заголовок (header) с почтой и logout ///////////////////////////////-->
 <div class="container-fluid bg-dark">
     <div class="row">
         <div class="col-md-10  my-2">
-            <span class="text-light fw-bold fs-5">heamens@mail.exe</span> <span class="text-light fs-6">with roles</span>
+            <span class="text-light fw-bold fs-5" th:text="${headEmail}" /> <span class="text-light fs-6" th:text="' with roles: '+ ${headRoles}"/>
         </div>
 
         <div class="col-md-2 my-2">
@@ -22,16 +23,22 @@
         </div>
     </div>
 </div>
-
+<!-- /////////////////////////////// основная часть сраницы /////////////////////////////////////////////-->
 <div class="row">
+<!-- //////////////////////////////// боковое меню (левое) ///////////////////////////////////////////////-->
     <div class="col-2">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <!--            Если будем переходить на принцип "Tabs" (закладки), то можно вспомнить это:-->
+            <!--            <a class="nav-link active" id="v-pills-Admin-tab" data-toggle="pill" href="#v-pills-Admin" role="tab" aria-controls="v-pills-Admin" aria-selected="true">Admin</a>-->
+            <!--            <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>-->
             <a class="nav-link active" id="v-pills-Admin-tab" data-toggle="pill" href="#v-pills-Admin" role="tab" aria-controls="v-pills-Admin" aria-selected="true">Admin</a>
-            <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
+            <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" th:href="@{/user}" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
         </div>
     </div>
+<!-- //////////////////////////////////// адмиyская панель  (table and New user)///////////////////////////////////////////////// -->
     <div class="col-10 bg-light">
         <h1> Admin panel </h1>
+        <!--///////////////////// пункты меню "Users table", "Add new user" //////////////////////////////////-->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="Users_table-tab" data-bs-toggle="tab" data-bs-target="#Users_table" type="button" role="tab" aria-controls="Users_table" aria-selected="true">Users table</button>
@@ -40,7 +47,9 @@
                 <button class="nav-link" id="NewUser-tab" data-bs-toggle="tab" data-bs-target="#NewUser" type="button" role="tab" aria-controls="NewUser" aria-selected="false">New user</button>
             </li>
         </ul>
+        <!--///////////////////// Вкладки к пунктам меню [users table], [Add new user] //////////////////////////////////-->
         <div class="tab-content" id="myTabContent">
+            <!--///////////////////// закладка  "users table"  ////////////////////////////////////////-->
             <div class="tab-pane fade show active" id="Users_table" role="tabpanel" aria-labelledby="Users_table-tab">
                 <h5>All users</h5>
                 <table class="table table-striped">
@@ -66,12 +75,13 @@
                         <td th:utext = "${user.password}"> </td>
                         <td th:utext = "${user.created}"> </td>
                         <td th:utext = "${user.modified}"> </td>
-                        <td> <input type="button" value="Edit" class="btn btn-success" id="bEdit" data-bs-toggle="modal" data-bs-target="#editUser" th:UserID="${user.id}"></input> </td>
-                        <td> <a class="btn btn-danger" th:href="@{/admin/delete(id=${user.id})}">Delete</a> </td>
+                        <td class="vl_EditButton"> <input type="button" value="Edit" class="btn btn-success" th:id="'bEdit' + ${user.id}" data-bs-toggle="modal" data-bs-target="#editUser" th:UserID="${user.id}"/> </td>
+                        <td class="vl_DeleteButton"> <input type="button" value="Delete" class="btn btn-danger" th:id="'bDelete' + ${user.id}" data-bs-toggle="modal" data-bs-target="#editUser" th:UserID="${user.id}"/> </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+            <!--///////////////////// закладка  "Add new user"  ////////////////////////////////////////-->
             <div class="tab-pane fade" id="NewUser" role="tabpanel" aria-labelledby="NewUser-tab">
                 <div class="container-fluid border">
                     <div class="row">Add new user 003 <span style="display: inline" id="panel2">ttt</span> </div>
@@ -80,13 +90,13 @@
                         <div class="col-md-4 border">
                             <form class="text-center" action="#" th:action="@{/admin/addUser}" method="post" th:object="${User}">
                                 <h6>First name</h6>
-                                <input type="text" class="form-control" id="firstName" aria-describedby="basic-addon3" required></input>
+                                <input type="text" class="form-control" id="firstName" aria-describedby="basic-addon3" required value="DEL_NOW"></input>
                                 <h6>Last name</h6>
-                                <input type="text" class="form-control" id="lastName" aria-describedby="basic-addon3" required></input>
+                                <input type="text" class="form-control" id="lastName" aria-describedby="basic-addon3" required value="DEL_NOW"></input>
                                 <h6>E-mail</h6>
-                                <input type="text" class="form-control" id="email" aria-describedby="basic-addon3" required></input>
+                                <input type="text" class="form-control" id="email" aria-describedby="basic-addon3" required value="DEL_NOW"></input>
                                 <h6>Password</h6>
-                                <input type="text" class="form-control" id="password" aria-describedby="basic-addon3" required></input>
+                                <input type="text" class="form-control" id="password" aria-describedby="basic-addon3" required value="DEL_NOW"></input>
                                 <H6>Roles</H6>
                                 <select class="form-select" multiple aria-label="пример множественного выбора" name="selectRoles" id="selectTag" size="10" required>
                                     <th:block th:each="role : ${roles}">
@@ -106,7 +116,7 @@
     </div>
 </div>
 
-<!-- вспомогательные элементы -->
+<!-- ////////////////// модальное окно редакирования пользователя /////////////////////////////// -->
 
 <div class="modal fade" id="editUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -117,8 +127,8 @@
             </div>
             <div class="modal-body">
                 <form class="text-center" action="#" th:action="@{/admin/addUser}" method="post" th:object="${User}">
-                    <input type="hidden" id="idMod"/>
-                    <input type="hidden" id="createdMod"/>
+                    <input type="text" disabled id="idMod"/>
+                    <input type="text" disabled id="createdMod"/>
                     <h6>First name</h6>
                     <input type="text" class="form-control" id="firstNameMod" aria-describedby="basic-addon3" required></input>
                     <h6>Last name</h6>
@@ -135,7 +145,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="bUpdate">Edit</button>
+                <button type="button" class="btn btn-primary" id="bEditDelete">Edit</button>
             </div>
         </div>
     </div>
@@ -153,15 +163,15 @@
 
 
 
-<h2 class="mt-10"> <a th:href="@{/admin/addUser}">Add new user</a> </h2>
+<!--<h2 class="mt-10"> <a th:href="@{/admin/addUser}">Add new user</a> </h2>-->
 
-<h3 th:utext="${result001}"></h3>
+<h3 id="result001">result</h3>
 
-<a th:href="@{/user}">Go to "user"</a> <br/>
+<!--<a th:href="@{/user}">Go to "user"</a> <br/>-->
 
-<form action="#" th:action="@{/logout}" method="get">
-    <input type="submit" value="logout"/>
-</form>
+<!--<form action="#" th:action="@{/logout}" method="get">-->
+<!--    <input type="submit" value="logout"/>-->
+<!--</form>-->
 
 
 <div id="box">

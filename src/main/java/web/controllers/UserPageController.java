@@ -10,6 +10,7 @@ import web.model.User;
 import web.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -24,19 +25,11 @@ public class UserPageController {
     @GetMapping(value = "")
     public String UserPage(Authentication auth, ModelMap model) {
         User user = (User) auth.getPrincipal();
-        List<String> messages = new ArrayList<>();
-        messages.add(String.format("Hello user \"%s!\"", user.getFirstName()));
-        messages.add("Your id: " + user.getId());
-        messages.add("First name: " + user.getFirstName());
-        messages.add("Last name: " + user.getLastName());
-        messages.add("E-mail: " + user.getEmail());
-        messages.add("Added/updated: " + user.getModified());
-        StringBuilder sb = new StringBuilder();
-        for (Role role: user.getRoles()) {
-            sb.append(role.getName()).append(", ");
-        }
-        messages.add("Roles: " + sb.toString());
-        model.addAttribute("messages", messages);
+        String headEmail = user.getEmail();
+        model.addAttribute("headEmail", headEmail);
+        String headRoles = Arrays.toString(user.getRoles().toArray());
+        model.addAttribute("headRoles", headRoles);
+        model.addAttribute("userPage", user);
         return "userPage";
     }
 }
